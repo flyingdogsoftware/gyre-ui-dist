@@ -1,6 +1,6 @@
 {
     "name": "@fds-components/fds-image-editor-canvas",
-    "version": "1.1.44",
+    "version": "1.1.45",
     "scripts": {
         "build": "npm run build:prepare && rollup -c",
         "devdoc": "npm run build:prepare && export SKIP_HTTPSERVER=true && export MAKE_DOC=true && rollup -c -w",
@@ -62,6 +62,7 @@
         "@fds-components/fds-tippy": "^1.0.14",
         "@fds-components/fds-treeview": "^1.0.52",
         "@fds-components/fds-image-editor-toggle": "^1.0.2",
+        "@fds-components/fds-progress-bar": "^1.0.2",
         "@imagemagick/magick-wasm": "0.0.21",
         "@zip.js/zip.js": "^2.7.6",
         "arrow-line": "^0.7.5",

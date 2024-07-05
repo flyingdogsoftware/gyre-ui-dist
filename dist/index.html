@@ -48,7 +48,7 @@
 
 
 
-<script src="https://fds-image-editor-sam-components-357098670083755d61d952e2824f114.pages.fdog.de/fds-image-editor-sam.js?3"></script>
+<script src="https://fds-image-editor-sam-components-357098670083755d61d952e2824f114.pages.fdog.de/fds-image-editor-sam.js?6"></script>
 
         <style>
             :root {
@@ -186,18 +186,19 @@
                 component.registerBrush(new brush_Oil_A(), 'brush_Oil_A')
                 component.registerBrush(new brush_Caligraphy(), 'brush_Caligraphy')
 
-                globalThis.gyre.registerPlugin("fds-image-editor-sam",{type:"tool",floatingToolBar:true,floatingToolBarWidth:390,title:"Auto Matte",
+                globalThis.gyre.registerPlugin("fds-image-editor-sam",{type:"tool",floatingToolBar:true,floatingToolBarWidth:490,title:"Auto Matte",
         tools: [ {
             name: "rect",
-            title: "Auto Matte Rectengular",
+            title: "Rectengular Selection",
             icon: "fds-image-editor-sam-rect",
             // later: popupMovie: webgl-url popUpTitle, popUpText    
             },
             {
                 name: "points",
-                title: "Auto Matte Points",
+                title: "Selection by Points",
                 icon: "fds-image-editor-sam-points"    
-            },            
+            },           
+
         ],
         icons: {
             "eye": {

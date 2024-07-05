@@ -187,16 +187,19 @@
                 component.registerBrush(new brush_Caligraphy(), 'brush_Caligraphy')
 
                 globalThis.gyre.registerPlugin("fds-image-editor-sam",{type:"tool",floatingToolBar:true,floatingToolBarWidth:490,title:"Auto Matte",
+                layerTypes:["image"],
         tools: [ {
             name: "rect",
             title: "Rectengular Selection",
             icon: "fds-image-editor-sam-rect",
+            floatingToolBarWidth:440
             // later: popupMovie: webgl-url popUpTitle, popUpText    
             },
             {
                 name: "points",
                 title: "Selection by Points",
-                icon: "fds-image-editor-sam-points"    
+                icon: "fds-image-editor-sam-points",
+                floatingToolBarWidth:570
             },           
 
         ],

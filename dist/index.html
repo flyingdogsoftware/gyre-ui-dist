@@ -12,7 +12,6 @@
         <script src="node_modules/@fds-components/fds-pose-editor/dist/fds-pose-editor.js?5"></script>
         <script src="node_modules/@fds-components/fds-image-editor-text/dist/fds-image-editor-text.js?4"></script>
         <script src="node_modules/@fds-components/fds-slider/dist/fds-slider.js?3"></script>
-        <script src="node_modules/@fds-components/fds-progress/dist/fds-progress.js?3"></script>
         <script src="node_modules/@fds-components/fds-3d-scene/dist/fds-3d-scene.js?3"></script>
         <script src="node_modules/@fds-components/fds-image-editor-dialog/dist/fds-image-editor-dialog.js?3"></script>
         <script src="node_modules/@fds-components/fds-image-editor-toggle/dist/fds-image-editor-toggle.js?3"></script>
@@ -48,7 +47,7 @@
 
 
 
-<script src="https://fds-image-editor-sam-components-357098670083755d61d952e2824f114.pages.fdog.de/fds-image-editor-sam.js?9"></script>
+<script src="https://fds-image-editor-sam-components-357098670083755d61d952e2824f114.pages.fdog.de/fds-image-editor-sam.js?10"></script>
 
         <style>
             :root {
@@ -225,6 +224,7 @@
 
 
         })            
+        globalThis.gyre.registerPlugin("fds-image-editor-text",{type:"layer",title:"Text",controlNet:true,quickMask:true})
 
                 if (!window.uxpHost && window.demomode) {
                     component.document = documentInfo

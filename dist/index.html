@@ -32,7 +32,7 @@
         <script src="appdata/brushes/tinycolor.js"></script>
         <script src="appdata/brushes/brush_Default.js?5"></script>
         <script src="appdata/brushes/brush_Oil_A.js?4"></script>
-        <script src="appdata/brushes/brush_Caligraphy.js?20"></script>
+        <script src="appdata/brushes/brush_Caligraphy.js?21"></script>
         <script src="appdata/brushes/brush_FromLayers.js?19"></script>
 
         <script src="babylon/babylon.js"></script>
@@ -183,7 +183,7 @@
                 component.registerBrush(new brush_Default(), 'brush_Default')
                 component.registerBrush(new brush_FromLayers(), 'brush_FromLayers')
                 component.registerBrush(new brush_Oil_A(), 'brush_Oil_A')
-                component.registerBrush(new brush_Caligraphy(), 'brush_Caligraphy')
+              //  component.registerBrush(new brush_Caligraphy(), 'brush_Caligraphy')
 
                 globalThis.gyre.registerPlugin("fds-image-editor-sam",{type:"tool",floatingToolBar:true,floatingToolBarWidth:490,title:"Auto Matte",
                 layerTypes:["image"],
@@ -224,7 +224,23 @@
 
 
         })            
-        globalThis.gyre.registerPlugin("fds-image-editor-text",{type:"layer",title:"Text",controlNet:true,quickMask:true})
+        globalThis.gyre.registerPlugin("fds-image-editor-text",{type:"layer",title:"Text",controlNet:true,quickMask:true,moveTool:true,convertToImage:true,letter:"T",
+        images: {"largeIcon":"/node_modules/@fds-components/fds-image-editor-text/dist//img/text_source.jpg",
+        "largeIconHover":"/node_modules/@fds-components/fds-image-editor-text/dist//img/text_result.jpg",
+    }
+        })
+
+
+        globalThis.gyre.registerPlugin("brush_Caligraphy",{type:"brush",title:"Caligraphy Brush",
+        images: {"largeIcon":"appdata/brushes/img/brush_Caligraphy2.jpg"},
+        form: {
+                spring:  {label:"Spring",type:"slider","from":1,"to":1000,"stepCount":1,"default":500},
+                friction:  {label:"Friction",type:"slider","from":1,"to":1000,"stepCount":1,"default":500},
+                splitNum:  {label:"Split number",type:"slider","from":1,"to":20,"stepCount":1,"default":10},
+                diff:  {label:"Diff",type:"slider","from":1,"to":20,"stepCount":1,"default":3}    
+            }        
+        })
+
 
                 if (!window.uxpHost && window.demomode) {
                     component.document = documentInfo

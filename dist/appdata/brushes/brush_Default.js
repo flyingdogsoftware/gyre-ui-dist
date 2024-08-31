@@ -29,7 +29,7 @@ class brush_Default {
 
     draw(context, point) {
         if (!this.values) return
-        context = context.contextList[0]
+        // context = context.contextList[0]
         const hardness = this.values.hardness / 100
         const brushSize = this.globalValues.brushSize
         const radius = brushSize / 2

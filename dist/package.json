@@ -1,12 +1,12 @@
 {
     "name": "@fds-components/fds-image-editor-canvas",
-    "version": "1.2.10",
+    "version": "1.2.14",
     "scripts": {
         "build": "npm run build:prepare && rollup -c",
         "devdoc": "npm run build:prepare && export SKIP_HTTPSERVER=true && export MAKE_DOC=true && rollup -c -w",
         "doc": "npm run build:prepare && export SKIP_HTTPSERVER=true && export MAKE_DOC=true && rollup -c && npm run copy:json_doc",
         "dev": "npm run build:prepare  && rollup -c -w",
-        "build:prepare": "rm -rf dist && mkdir -p dist/node_modules && npm run copy:json_doc && npm run copy:node_modules",
+        "build:prepare": "rm -rf dist && mkdir -p dist/node_modules/@fds-components &&  npm run copy:json_doc && npm run copy:node_modules",
         "copy:node_modules": "cp -rp node_modules/@fds-components dist/node_modules/@fds-components",
         "copy:pages": "cp -rp dist public",
         "copy:json_doc": "find . -maxdepth 1 -name \"*.json\" ! -name 'package*' ! -name 'COMPONENT_API.json' -type f  -exec cp -- {} dist \\;",
@@ -56,7 +56,7 @@
         "@fds-components/fds-image-editor-progress-bar": "^1.0.5",
         "@fds-components/fds-image-editor-slider": "^1.0.2",
         "@fds-components/fds-image-editor-toggle": "^1.0.3",
-        "@fds-components/fds-image-transform": "^1.0.12",
+        "@fds-components/fds-image-transform": "^1.0.17",
         "@fds-components/fds-local-files": "^1.0.15",
         "@fds-components/fds-pose-editor": "^1.0.40",
         "@fds-components/fds-progress": "^1.0.4",

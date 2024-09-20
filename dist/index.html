@@ -13,7 +13,7 @@
     <script src="node_modules/@fds-components/fds-image-editor-slider/dist/fds-image-editor-slider.js?3"></script>
     <script src="node_modules/@fds-components/fds-3d-scene/dist/fds-3d-scene.js?3"></script>
    <script src="node_modules/@fds-components/fds-image-editor-dialog/dist/fds-image-editor-dialog.js?3"></script> 
-<!--   <script src="http://localhost:4011/fds-image-editor-dialog.js"></script>-->
+<script src="http://localhost:4002/fds-image-editor-selection.js"></script>
     <script src="node_modules/@fds-components/fds-image-editor-toggle/dist/fds-image-editor-toggle.js?3"></script>
     <script src="node_modules/@fds-components/fds-image-editor-progress-bar/dist/fds-image-editor-progress-bar.js?3"></script>
     <script src="node_modules/@fds-components/fds-image-editor-menu/dist/fds-image-editor-menu.js"></script> 
@@ -192,7 +192,53 @@
         component.registerBrush(new brush_Default(), 'brush_Default')
         component.registerBrush(new brush_FromLayers(), 'brush_FromLayers')
         component.registerBrush(new brush_Oil_A(), 'brush_Oil_A')
+globalThis.gyre.registerPlugin("fds-image-editor-selection",{type:"tool",floatingToolBar:true,floatingToolBarWidth:425,refreshOnScroll:true,
+"title":"Selection Tools",
+"layerTypes": ["image"],
+      "tools": [
+        {
+          "name": "freeform",
+          "title": "Freeform Selection",
+          "icon": "fds-image-editor-selection-freeform",                   
+          "floatingToolBarWidth": 440
+        },
+        {
+          "name": "rectangle",
+          "title": "Rectangle Selection",
+          "icon": "fds-image-editor-selection-rectangle",
+          "floatingToolBarWidth": 440
+        },
+        {
+          "name": "ellipse",
+          "title": "Ellipse Selection",
+          "icon": "fds-image-editor-selection-ellipse",
+          "floatingToolBarWidth": 440
+        },        
+      ],
+        "icons": {
+            "toolbar-icon": {
+                "body": '  <path d="M 6.67 32.124 Q 32 8 52 42 C 41.838 52.018 28.144 62.39 14.802 61.282 C 4.596 55.365 4.054 37.498 6.599 32.053" stroke-width="3" fill="none" stroke-dasharray="3,3"/><circle cx="48" cy="32" r="5" />',
+                "width": 64,
+                "height": 64
+            },            
+            "freeform": {
+                "body": '  <path d="M 6.67 32.124 Q 32 8 52 42 C 41.838 52.018 28.144 62.39 14.802 61.282 C 4.596 55.365 4.054 37.498 6.599 32.053" stroke-width="3" fill="none" stroke-dasharray="3,3"/><circle cx="48" cy="32" r="5" />',
+                "width": 64,
+                "height": 64                
+            },
+            "rectangle": {
+                "body": '<rect x="4" y="4" width="56" height="56"  stroke-width="3" fill="none" stroke-dasharray="4,4"/>',
+                "width": 64,
+                "height": 64                
+            },
+            "ellipse": {
+                "body": '<ellipse cx="32" cy="32" rx="28" ry="20"  stroke-width="3" fill="none" stroke-dasharray="4,4"/>',
+                "width": 64,
+                "height": 64                
+            }
 
+        }
+    })
         if (!window.uxpHost && window.demomode) {
             component.document = documentInfo
             component.layers = layers

@@ -52,7 +52,7 @@
         "@fds-components/fds-ai-image-editor": "^1.2.18",
         "@fds-components/fds-image-editor-button": "^1.0.39",
         "@fds-components/fds-image-editor-dialog": "^1.0.33",
-        "@fds-components/fds-image-editor-menu": "^1.0.4",
+        "@fds-components/fds-image-editor-menu": "^1.0.7",
         "@fds-components/fds-image-editor-progress-bar": "^1.0.5",
         "@fds-components/fds-image-editor-slider": "^1.0.2",
         "@fds-components/fds-image-editor-toggle": "^1.0.3",

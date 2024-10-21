@@ -26,6 +26,9 @@ Promise.all([
         'https://flyingdogsoftware.github.io/gyre-ui-dist/dist/node_modules/%40fds-components/fds-image-editor-menu/dist/fds-image-editor-menu.js'
     ),
     loadScript(
+        'https://flyingdogsoftware.github.io/gyre-ui-dist/dist/node_modules/%40fds-components/fds-ui-component-anchor/dist/fds-ui-component-anchor.js'
+    ),
+    loadScript(
         'https://flyingdogsoftware.github.io/gyre-ui-dist/dist/node_modules/%40fds-components/fds-image-editor-progress-bar/dist/fds-image-editor-progress-bar.js'
     ),
     loadScript(

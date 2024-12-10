@@ -59,7 +59,7 @@
         "@fds-components/fds-image-editor-selection": "^1.0.12",
         "@fds-components/fds-image-editor-slider": "^1.0.13",
         "@fds-components/fds-image-editor-toggle": "^1.0.3",
-        "@fds-components/fds-image-transform": "^1.0.72",
+        "@fds-components/fds-image-transform": "^1.0.80",
         "@fds-components/fds-local-files": "^1.0.18",
         "@fds-components/fds-pose-editor": "^1.0.40",
         "@fds-components/fds-progress": "^1.0.4",

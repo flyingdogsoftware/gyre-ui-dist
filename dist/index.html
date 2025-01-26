@@ -195,6 +195,8 @@
         component.registerBrush(new brush_Default(), 'brush_Default')
         component.registerBrush(new brush_FromLayers(), 'brush_FromLayers')
         component.registerBrush(new brush_Oil_A(), 'brush_Oil_A')
+        globalThis.gyre.registerPlugin("fds-ai-editor",{type:"asset",allowedTypes:["image/jpeg","image/png","image/webp",".gyre"]})
+
 globalThis.gyre.registerPlugin("fds-image-editor-selection",{type:"tool",floatingToolBar:true,floatingToolBarWidth:425,refreshOnScroll:true,
 "title":"Selection Tools",
 "layerTypes": ["image"],

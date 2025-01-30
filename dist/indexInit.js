@@ -1,4 +1,4 @@
-export class indexInit {
+class indexInit {
     init() {
         window.demomode = !window.postMessageAdapter
         window.developmode = false

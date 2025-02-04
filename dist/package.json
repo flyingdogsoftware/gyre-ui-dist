@@ -51,7 +51,7 @@
         "@fds-components/fds-3d-scene": "^1.0.16",
         "@fds-components/fds-ai-image-editor": "^1.2.19",
         "@fds-components/fds-image-editor-button": "^1.0.44",
-        "@fds-components/fds-image-editor-dialog": "^1.0.35",
+        "@fds-components/fds-image-editor-dialog": "^1.0.36",
         "@fds-components/fds-image-editor-gradient": "^1.0.21",
         "@fds-components/fds-image-editor-menu": "^1.0.18",
         "@fds-components/fds-image-editor-paint-bucket": "^1.0.65",

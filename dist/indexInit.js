@@ -6,13 +6,7 @@ class indexInit {
         let layers = []
         let Config = {}
         let serverFeatures = {}
-        let component = document.querySelector('fds-ai-editor')
-        // @ts-ignore
-        component.registerBrush(new brush_Default(), 'brush_Default')
-        // @ts-ignore
-        component.registerBrush(new brush_FromLayers(), 'brush_FromLayers')
-        // @ts-ignore
-        component.registerBrush(new brush_Oil_A(), 'brush_Oil_A')
+
         globalThis.gyre.registerPlugin('fds-ai-editor', {
             type: 'asset',
             allowedTypes: ['image/jpeg', 'image/png', 'image/webp', '.gyre'],
@@ -95,16 +89,24 @@ class indexInit {
             alert(event.reason)
         })
     }
-
-    async initAsset(assetId, docId) {
-        let gyre = globalThis.gyre
-        gyre.docId = docId
-        gyre.assetId = assetId
+    registerBrushes() {
+        let component = document.querySelector('fds-ai-editor')
         // @ts-ignore
-        await globalThis.broadcast.fetchConfig() // init gyre and everything else
+        component.registerBrush(new brush_Default(), 'brush_Default')
+        // @ts-ignore
+        component.registerBrush(new brush_FromLayers(), 'brush_FromLayers')
+        // @ts-ignore
+        component.registerBrush(new brush_Oil_A(), 'brush_Oil_A')
+    }
+    async initAsset(assetId, docId) {
+        // @ts-ignore
+        let res = await globalThis.broadcast.fetchConfig() // init gyre and everything else
+        if (!res) return
+        console.log('initAsset, layers', globalThis.gyre.layers)
         let doc = window.document
         let pluginComponent = doc.createElement(globalThis.gyre.asset.type)
         pluginComponent.classList.add('darkColorScheme')
-        pluginComponent.doc.body.appendChild(pluginComponent)
+        doc.body.appendChild(pluginComponent)
+        await pluginComponent.ready
     }
 }

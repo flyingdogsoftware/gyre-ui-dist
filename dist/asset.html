@@ -63,14 +63,16 @@
     const paramName = params.get('comfy');
     if (paramName) window.comfyuimode = true;
     window.addEventListener('load', async () => {
+        const queryParams = new URLSearchParams(window.location.search)
+        const docId = queryParams.get('docId')
+        const assetId = queryParams.get('assetId')
         let init=new indexInit()
-        init.init()
-        init.registerBrushes()
-        globalThis.broadcast=new broadcast("master")
+        globalThis.broadcast=new broadcast("slave",docId,assetId)
         globalThis.broadcast.messageHandler()
+
+        await init.initAsset(docId,assetId)  // load asset data and all config from master
+
     })
 </script>
-<!--  <img id="test" width="500" /> -->
-<fds-ai-editor class="darkColorScheme"></fds-ai-editor>
 </body>
 </html>

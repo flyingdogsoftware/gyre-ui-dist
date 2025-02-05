@@ -51,6 +51,7 @@
 
     <link href="styles.css" rel="stylesheet"/>
     <script src="/indexInit.js?3"></script>
+    <script src="/broadcast.js?2"></script>
 
 </head>
 <body class="darkColorScheme">
@@ -61,9 +62,11 @@
     // Get a specific parameter value by its name
     const paramName = params.get('comfy');
     if (paramName) window.comfyuimode = true;
-    window.addEventListener('load', () => {
+    window.addEventListener('load', async () => {
         let init=new indexInit()
         init.init()
+        globalThis.broadcast=new broadcast("master")
+        globalThis.broadcast.messageHandler()
     })
 </script>
 <!--  <img id="test" width="500" /> -->

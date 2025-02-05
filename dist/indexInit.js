@@ -7,10 +7,21 @@ class indexInit {
         let Config = {}
         let serverFeatures = {}
         let component = document.querySelector('fds-ai-editor')
+        // @ts-ignore
         component.registerBrush(new brush_Default(), 'brush_Default')
+        // @ts-ignore
         component.registerBrush(new brush_FromLayers(), 'brush_FromLayers')
+        // @ts-ignore
         component.registerBrush(new brush_Oil_A(), 'brush_Oil_A')
-        globalThis.gyre.registerPlugin('fds-ai-editor', { type: 'asset', allowedTypes: ['image/jpeg', 'image/png', 'image/webp', '.gyre'] })
+        globalThis.gyre.registerPlugin('fds-ai-editor', {
+            type: 'asset',
+            allowedTypes: ['image/jpeg', 'image/png', 'image/webp', '.gyre'],
+            hasClone: true,
+            createEmpty: true,
+            name: 'Gyre Document',
+            contextMenu: [{ name: 'test', method: 'testMethod' }],
+            openAsset: 'default',
+        })
 
         globalThis.gyre.registerPlugin('fds-image-editor-selection', {
             type: 'tool',
@@ -63,9 +74,14 @@ class indexInit {
             },
         })
         if (!window.uxpHost && window.demomode) {
+            if (!component) return
+            // @ts-ignore
             component.document = documentInfo
+            // @ts-ignore
             component.layers = layers
+            // @ts-ignore
             component.paletteValues.Config = Config
+            // @ts-ignore
             component.paletteValues.generate = Config.generalConfig.dlgData
             component.paletteValues.generate.prompt = Config.globalData.prompt
             component.paletteValues.generate.modifiers = Config.globalData.modifiers
@@ -78,5 +94,17 @@ class indexInit {
             console.log(event.promise)
             alert(event.reason)
         })
+    }
+
+    async initAsset(assetId, docId) {
+        let gyre = globalThis.gyre
+        gyre.docId = docId
+        gyre.assetId = assetId
+        // @ts-ignore
+        await globalThis.broadcast.fetchConfig() // init gyre and everything else
+        let doc = window.document
+        let pluginComponent = doc.createElement(globalThis.gyre.asset.type)
+        pluginComponent.classList.add('darkColorScheme')
+        pluginComponent.doc.body.appendChild(pluginComponent)
     }
 }

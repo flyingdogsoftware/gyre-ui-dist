@@ -5,7 +5,7 @@ class broadcast {
         this.assetId = assetId
         this.channel = new BroadcastChannel('gyre')
     }
-    async sendRequest(message) {
+    async sendRequest(message, data = null) {
         return new Promise((resolve, reject) => {
             const requestId = Math.random().toString(36).substr(2) // Eindeutige ID
 
@@ -31,11 +31,25 @@ class broadcast {
                 docId: this.docId,
                 assetId: this.assetId,
             }
+            if (data) {
+                sendObj.data = data
+            }
             console.log('postMessage', sendObj)
             this.channel.postMessage(sendObj)
         })
     }
-
+    sendWithoutResponse(message, data = null) {
+        let sendObj = {
+            payload: message,
+            docId: this.docId,
+            assetId: this.assetId,
+        }
+        if (data) {
+            sendObj.data = data
+        }
+        console.log('postMessage (fire and forget)', sendObj)
+        this.channel.postMessage(sendObj)
+    }
     async fetchConfig() {
         let config
         try {
@@ -68,32 +82,35 @@ class broadcast {
 
     deepCloneAndFilter(obj) {
         if (obj instanceof HTMLElement || typeof obj === 'function') {
-          // Exclude HTMLElements (or replace with a placeholder)
-          return undefined;
+            // Exclude HTMLElements (or replace with a placeholder)
+            return undefined
         }
         if (Array.isArray(obj)) {
-          return obj.map(item => this.deepCloneAndFilter(item));
+            return obj.map((item) => this.deepCloneAndFilter(item))
         }
         if (obj && typeof obj === 'object') {
-          const result = {};
-          for (const key in obj) {
-            if (obj.hasOwnProperty(key)) {
-              result[key] = this.deepCloneAndFilter(obj[key]);
+            const result = {}
+            for (const key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    result[key] = this.deepCloneAndFilter(obj[key])
+                }
             }
-          }
-          return result;
+            return result
         }
-        return obj; // primitive values are returned as-is
-      }
-      
-      
-
+        return obj // primitive values are returned as-is
+    }
 
     async messageHandler() {
         let gyre = globalThis.gyre
         this.channel.onmessage = async (e) => {
             console.log('onmessage', e.data)
             if (e.data.docId !== this.docId) return
+            // asset successfully opened
+            if (e.data.payload === 'opened') {
+                let asset = gyre.assetManager.getAssetById(e.data.assetId)
+                asset.isOpen = true
+                return
+            }
             // provide environment for slave tab
             if (e.data.payload === 'getConfig' && this.type === 'master') {
                 let config = {

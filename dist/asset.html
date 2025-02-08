@@ -71,7 +71,9 @@
         globalThis.broadcast.messageHandler()
 
         await init.initAsset(docId,assetId)  // load asset data and all config from master
-
+        window.addEventListener('beforeunload', () => {
+            globalThis.broadcast.tabClosed()
+        })
     })
 </script>
 </body>

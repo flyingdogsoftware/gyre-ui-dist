@@ -50,6 +50,7 @@ class broadcast {
         console.log('postMessage (fire and forget)', sendObj)
         this.channel.postMessage(sendObj)
     }
+    // fetch config in asset tab, siehe unten im messageHandler             if (e.data.payload === 'getConfig' && this.type === 'master')
     async fetchConfig() {
         let config
         try {
@@ -79,7 +80,12 @@ class broadcast {
         gyre.paletteValues = config.paletteValues
         return true
     }
-
+    async tabClosed() {
+        let gyre = globalThis.gyre
+        gyre.asset.isOpen = false
+        let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset)
+        this.sendWithoutResponse('tabClosedAssetUpdate', assetChanged)
+    }
     deepCloneAndFilter(obj) {
         if (obj instanceof HTMLElement || typeof obj === 'function') {
             // Exclude HTMLElements (or replace with a placeholder)
@@ -105,10 +111,15 @@ class broadcast {
         this.channel.onmessage = async (e) => {
             console.log('onmessage', e.data)
             if (e.data.docId !== this.docId) return
+
+            if (e.data.payload === 'tabClosedAssetUpdate' && this.type === 'master') {
+                let assetInstanceUpdated = await this.processWithPlugin(e.data.data.type, 'prepareAssetAfterLoad', e.data.data)
+                gyre.assetManager.updateAsset(assetInstanceUpdated)
+            }
             // asset successfully opened
             if (e.data.payload === 'opened') {
                 let asset = gyre.assetManager.getAssetById(e.data.assetId)
-                asset.isOpen = true
+                asset.isOpen = e.data.data // set open info
                 return
             }
             // provide environment for slave tab

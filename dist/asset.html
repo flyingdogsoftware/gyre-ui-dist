@@ -50,7 +50,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
 
     <link href="styles.css" rel="stylesheet"/>
-    <script src="/indexInit.js?9"></script>
+    <script src="/indexInit.js?10"></script>
     <script src="/broadcast.js?9"></script>
 
 </head>
@@ -71,8 +71,41 @@
         globalThis.broadcast.messageHandler()
 
         await init.initAsset(docId,assetId)  // load asset data and all config from master
+        globalThis.gyre.setFavIcon()
+
+
         window.addEventListener('beforeunload', () => {
             globalThis.broadcast.tabClosed()
+        })
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {  // send all data back if tab is switched
+                //console.log('visibilitychange: I am not in  focus anymore, send data');
+                globalThis.broadcast.tabSwitched()
+            } else {
+                //console.log('visibilitychange: I am in focus again');
+            }
+        })
+
+        let lastBlurTime = 0;
+        const BLUR_DEBOUNCE_DELAY = 1000; // 1 Sekunde
+        window.addEventListener('blur', () => {
+        const now = Date.now();
+        if (now - lastBlurTime < BLUR_DEBOUNCE_DELAY) return; // zu kurzer Abstand → ignorieren
+        lastBlurTime = now
+        
+        setTimeout(() => {
+            // Sicherstellen, dass der Tab immer noch nicht fokussiert ist
+            if (!document.hasFocus()) {
+            //console.log('blur: I am not in focus anymore, send data');
+            globalThis.broadcast.tabSwitched();
+            }
+        }, BLUR_DEBOUNCE_DELAY);
+        })
+
+        window.addEventListener('focus', () => {
+           // console.log('focus: I am in focus again');
+        lastBlurTime = 0;
         })
     })
 </script>

@@ -77,6 +77,7 @@ class broadcast {
         gyre.asset = await this.processWithPlugin(config.asset.type, 'prepareAssetAfterLoad', config.asset)
         gyre.assets = config.assets
         gyre.plugins = config.plugins
+        gyre.icons = config.icons
         gyre.ComfyUI.workflowList = config.workflowList
         gyre.paletteValues = config.paletteValues
         return true
@@ -87,6 +88,12 @@ class broadcast {
         let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset)
         this.sendWithoutResponse('tabClosedAssetUpdate', assetChanged)
     }
+    async tabSwitched() {
+        let gyre = globalThis.gyre
+        let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset)
+        this.sendWithoutResponse('tabSwitchedAssetUpdate', assetChanged)
+    }
+
     deepCloneAndFilter(obj) {
         if (obj instanceof HTMLElement || typeof obj === 'function') {
             // Exclude HTMLElements (or replace with a placeholder)
@@ -126,12 +133,16 @@ class broadcast {
             console.log('onmessage', e.data)
             if (e.data.docId !== this.docId) return
             if (e.data.payload === 'focus' && gyre.asset && e.data.assetId === gyre.asset.id) {
-                console.log('focus me')
-                window.focus()
-                this.animateTitle()
+                window.focus() // not working in Chrome but hopefully on iPad
+                this.animateTitle() // workaround
                 return
             }
             if (e.data.payload === 'tabClosedAssetUpdate' && this.type === 'master') {
+                let assetInstanceUpdated = await this.processWithPlugin(e.data.data.type, 'prepareAssetAfterLoad', e.data.data)
+                gyre.assetManager.updateAsset(assetInstanceUpdated)
+            }
+            if (e.data.payload === 'tabSwitchedAssetUpdate' && this.type === 'master') {
+                console.log('update asset', e.data.data)
                 let assetInstanceUpdated = await this.processWithPlugin(e.data.data.type, 'prepareAssetAfterLoad', e.data.data)
                 gyre.assetManager.updateAsset(assetInstanceUpdated)
             }
@@ -146,6 +157,7 @@ class broadcast {
                 let config = {
                     toolsLayers: gyre.toolsLayers,
                     plugins: gyre.plugins,
+                    icons: gyre.icons,
                     workflowList: gyre.ComfyUI.workflowList,
                     paletteValues: (({ tools, selectedLayer, _controlnetLayers, _controlnetLayersTxt2Img, ...rest }) => rest)(gyre.paletteValues),
                 }

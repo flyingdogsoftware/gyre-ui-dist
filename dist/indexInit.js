@@ -90,7 +90,7 @@ class indexInit {
         })
     }
     registerBrushes() {
-        let component = document.querySelector('fds-ai-editor')
+        let component = window.document.querySelector('fds-ai-editor')
         // @ts-ignore
         component.registerBrush(new brush_Default(), 'brush_Default')
         // @ts-ignore

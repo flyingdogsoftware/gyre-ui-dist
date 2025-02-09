@@ -38,11 +38,12 @@ class broadcast {
             this.channel.postMessage(sendObj)
         })
     }
-    sendWithoutResponse(message, data = null) {
+    sendWithoutResponse(message, data = null, assetId = '') {
+        if (!assetId) assetId = this.assetId
         let sendObj = {
             payload: message,
             docId: this.docId,
-            assetId: this.assetId,
+            assetId: assetId,
         }
         if (data) {
             sendObj.data = data
@@ -105,13 +106,31 @@ class broadcast {
         }
         return obj // primitive values are returned as-is
     }
+    animateTitle(duration = 1000, intervalTime = 200) {
+        const originalTitle = window.document.title
+        let blinkState = false
+        const interval = setInterval(() => {
+            blinkState = !blinkState
+            window.document.title = blinkState ? `!!! ${originalTitle} !!!` : originalTitle
+        }, intervalTime)
 
+        // Animation nach einer bestimmten Zeit wieder beenden
+        setTimeout(() => {
+            clearInterval(interval)
+            window.document.title = originalTitle
+        }, duration)
+    }
     async messageHandler() {
-        let gyre = globalThis.gyre
         this.channel.onmessage = async (e) => {
+            let gyre = globalThis.gyre
             console.log('onmessage', e.data)
             if (e.data.docId !== this.docId) return
-
+            if (e.data.payload === 'focus' && gyre.asset && e.data.assetId === gyre.asset.id) {
+                console.log('focus me')
+                window.focus()
+                this.animateTitle()
+                return
+            }
             if (e.data.payload === 'tabClosedAssetUpdate' && this.type === 'master') {
                 let assetInstanceUpdated = await this.processWithPlugin(e.data.data.type, 'prepareAssetAfterLoad', e.data.data)
                 gyre.assetManager.updateAsset(assetInstanceUpdated)

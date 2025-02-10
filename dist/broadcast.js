@@ -39,6 +39,7 @@ class broadcast {
         })
     }
     sendWithoutResponse(message, data = null, assetId = '') {
+        if (this.doNothing) return
         if (!assetId) assetId = this.assetId
         let sendObj = {
             payload: message,
@@ -83,17 +84,21 @@ class broadcast {
         return true
     }
     async tabClosed() {
+        if (this.doNothing) return
         let gyre = globalThis.gyre
         gyre.asset.isOpen = false
         let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset)
         this.sendWithoutResponse('tabClosedAssetUpdate', assetChanged)
     }
     async tabSwitched() {
+        if (this.doNothing) return
         let gyre = globalThis.gyre
         let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset)
         this.sendWithoutResponse('tabSwitchedAssetUpdate', assetChanged)
     }
-
+    async closeAssets() {
+        this.sendWithoutResponse('closeAssets')
+    }
     deepCloneAndFilter(obj) {
         if (obj instanceof HTMLElement || typeof obj === 'function') {
             // Exclude HTMLElements (or replace with a placeholder)
@@ -132,6 +137,12 @@ class broadcast {
             let gyre = globalThis.gyre
             console.log('onmessage', e.data)
             if (e.data.docId !== this.docId) return
+
+            if (e.data.payload === 'closeAssets' && this.type !== 'master') {
+                this.doNothing = true
+                window.close()
+                return
+            }
             if (e.data.payload === 'focus' && gyre.asset && e.data.assetId === gyre.asset.id) {
                 window.focus() // not working in Chrome but hopefully on iPad
                 this.animateTitle() // workaround

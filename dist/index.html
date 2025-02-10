@@ -68,6 +68,9 @@
         init.registerBrushes()
         globalThis.broadcast=new broadcast("master")
         globalThis.broadcast.messageHandler()
+        window.addEventListener('beforeunload', () => {
+            globalThis.broadcast.closeAssets()
+        })        
     })
 </script>
 <!--  <img id="test" width="500" /> -->

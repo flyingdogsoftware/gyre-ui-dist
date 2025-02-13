@@ -5,7 +5,7 @@ class broadcast {
         this.assetId = assetId
         this.channel = new BroadcastChannel('gyre')
     }
-    async sendRequest(message, data = null) {
+    async sendRequest(message, data = {}) {
         return new Promise((resolve, reject) => {
             const requestId = Math.random().toString(36).substr(2) // Eindeutige ID
 
@@ -99,6 +99,17 @@ class broadcast {
     async closeAssets() {
         this.sendWithoutResponse('closeAssets')
     }
+
+    async getRef(refId) {
+        let gyre = globalThis.gyre
+        if (this.type === 'master') {
+            let asset = gyre.assetManager.getAssetById(refId)
+            // master has got everything
+            return asset.ref
+        }
+        let ref = await this.sendRequest('getRef', { refId: refId })
+        return ref
+    }
     deepCloneAndFilter(obj) {
         if (obj instanceof HTMLElement || typeof obj === 'function') {
             // Exclude HTMLElements (or replace with a placeholder)
@@ -132,6 +143,7 @@ class broadcast {
             window.document.title = originalTitle
         }, duration)
     }
+
     async messageHandler() {
         this.channel.onmessage = async (e) => {
             let gyre = globalThis.gyre
@@ -148,10 +160,7 @@ class broadcast {
             }
             if (e.data.payload === 'getRef') {
                 let asset = gyre.assetManager.getAssetById(e.data.refId)
-                if (this.type === 'master') {
-                    // master has got everything
-                    return asset.ref
-                }
+
                 this.channel.postMessage({
                     requestId: e.data.requestId,
                     payload: this.deepCloneAndFilter(asset.ref),

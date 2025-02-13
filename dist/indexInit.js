@@ -13,7 +13,7 @@ class indexInit {
             hasClone: true,
             createEmpty: true,
             name: 'Gyre Document',
-            contextMenu: [{ name: 'test', method: 'testMethod' }],
+            //    contextMenu: [{ name: 'test', method: 'testMethod' }],
             openAsset: 'default',
         })
 

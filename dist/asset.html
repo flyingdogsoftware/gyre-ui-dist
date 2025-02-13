@@ -74,8 +74,12 @@
         globalThis.gyre.setFavIcon()
 
 
-        window.addEventListener('beforeunload', () => {
+        window.addEventListener('beforeunload', (e) => {
             globalThis.broadcast.tabClosed()
+              // debugging: Modern browsers require this to trigger the dialog
+        //e.preventDefault();
+            //e.returnValue = ''; // Required for Chrome
+            //return ''; // Required for older browsers
         })
 
         document.addEventListener('visibilitychange', () => {

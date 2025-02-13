@@ -11,7 +11,7 @@ class broadcast {
 
             // Timeout für fehlende Antwort
             const timeout = setTimeout(() => {
-                reject(new Error('Timeout: Keine Antwort erhalten'))
+                reject(new Error('sendRequest timeout: ' + message))
                 this.channel.removeEventListener('message', responseHandler)
             }, 5000) // 5 Sekunden
 
@@ -84,16 +84,16 @@ class broadcast {
         return true
     }
     async tabClosed() {
-        if (this.doNothing) return
+        // if (this.doNothing) return
         let gyre = globalThis.gyre
         gyre.asset.isOpen = false
-        let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset)
+        let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset, 'tab')
         this.sendWithoutResponse('tabClosedAssetUpdate', assetChanged)
     }
     async tabSwitched() {
         if (this.doNothing) return
         let gyre = globalThis.gyre
-        let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset)
+        let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset, 'tab')
         this.sendWithoutResponse('tabSwitchedAssetUpdate', assetChanged)
     }
     async closeAssets() {
@@ -137,25 +137,47 @@ class broadcast {
             let gyre = globalThis.gyre
             console.log('onmessage', e.data)
             if (e.data.docId !== this.docId) return
+            if (e.data?.targetIds && !e.data?.targetIds?.includes(gyre.asset.id)) return // message only for a list (targetIds) of target tabs/assets
 
+            if (e.data.payload === 'updateRef') {
+                let asset = gyre.assetManager.getAssetById(e.data.assetId)
+                // update ref object
+                asset.ref = e.data.ref
+                gyre.refresh()
+                return
+            }
+            if (e.data.payload === 'getRef') {
+                let asset = gyre.assetManager.getAssetById(e.data.refId)
+                if (this.type === 'master') {
+                    // master has got everything
+                    return asset.ref
+                }
+                this.channel.postMessage({
+                    requestId: e.data.requestId,
+                    payload: this.deepCloneAndFilter(asset.ref),
+                })
+                return
+            }
             if (e.data.payload === 'closeAssets' && this.type !== 'master') {
                 this.doNothing = true
                 window.close()
                 return
             }
             if (e.data.payload === 'focus' && gyre.asset && e.data.assetId === gyre.asset.id) {
-                window.focus() // not working in Chrome but hopefully on iPad
+                window.focus() // not working in Chrome but hopefully on iPad or desktop app
                 this.animateTitle() // workaround
                 return
             }
             if (e.data.payload === 'tabClosedAssetUpdate' && this.type === 'master') {
                 let assetInstanceUpdated = await this.processWithPlugin(e.data.data.type, 'prepareAssetAfterLoad', e.data.data)
                 gyre.assetManager.updateAsset(assetInstanceUpdated)
+                await this.processWithPlugin(e.data.data.type, 'assetUpdated', assetInstanceUpdated)
             }
             if (e.data.payload === 'tabSwitchedAssetUpdate' && this.type === 'master') {
                 console.log('update asset', e.data.data)
                 let assetInstanceUpdated = await this.processWithPlugin(e.data.data.type, 'prepareAssetAfterLoad', e.data.data)
                 gyre.assetManager.updateAsset(assetInstanceUpdated)
+                await this.processWithPlugin(e.data.data.type, 'assetUpdated', assetInstanceUpdated)
             }
             // asset successfully opened
             if (e.data.payload === 'opened') {
@@ -179,7 +201,7 @@ class broadcast {
                     alert('Can not find asset with ID ' + e.data.assetI)
                     return
                 }
-                config.asset = await this.processWithPlugin(assetWithInstances.type, 'prepareAssetForSave', assetWithInstances)
+                config.asset = await this.processWithPlugin(assetWithInstances.type, 'prepareAssetForSave', assetWithInstances, 'tab')
                 if (!config.asset) {
                     alert('Unable to prepare asset for sending to another tab - see console for more info')
                     console.log('asset:', assetWithInstances)

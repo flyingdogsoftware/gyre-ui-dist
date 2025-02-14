@@ -1,6 +1,31 @@
 class indexInit {
     init() {
+        // @ts-ignore
+        console.image = (url, height = 200) => {
+            const image = new Image()
+            image.crossOrigin = 'anonymous'
+            image.onload = function () {
+                // build a data url
+                const canvas = document.createElement('canvas')
+                const ctx = canvas.getContext('2d')
+                canvas.height = height || image.naturalHeight
+                canvas.width = (canvas.height * image.naturalWidth) / image.naturalHeight
+                // @ts-ignore
+                ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+                const dataUrl = canvas.toDataURL()
+                const style = [
+                    'font-size: 1px;',
+                    `padding: ${canvas.height}px ${canvas.width}px;`,
+                    `background: url(${dataUrl}) no-repeat;`,
+                    'background-size: contain;',
+                ].join(' ')
+                console.log('%c ', style)
+            }
+            image.src = url
+        }
+        // @ts-ignore
         window.demomode = !window.postMessageAdapter
+        // @ts-ignore
         window.developmode = false
         let documentInfo = { width: 2301, height: 1536 }
         let layers = []

@@ -87,13 +87,13 @@ class broadcast {
         // if (this.doNothing) return
         let gyre = globalThis.gyre
         gyre.asset.isOpen = false
-        let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset, 'tab')
+        let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset, 'tabClose')
         this.sendWithoutResponse('tabClosedAssetUpdate', assetChanged)
     }
     async tabSwitched() {
         if (this.doNothing) return
         let gyre = globalThis.gyre
-        let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset, 'tab')
+        let assetChanged = await this.processWithPlugin(gyre.asset.type, 'prepareAssetForSave', gyre.asset, 'tabSwitch')
         this.sendWithoutResponse('tabSwitchedAssetUpdate', assetChanged)
     }
     async closeAssets() {
@@ -181,12 +181,16 @@ class broadcast {
                 let assetInstanceUpdated = await this.processWithPlugin(e.data.data.type, 'prepareAssetAfterLoad', e.data.data)
                 gyre.assetManager.updateAsset(assetInstanceUpdated)
                 await this.processWithPlugin(e.data.data.type, 'assetUpdated', assetInstanceUpdated)
+                gyre.refresh()
             }
             if (e.data.payload === 'tabSwitchedAssetUpdate' && this.type === 'master') {
-                console.log('update asset', e.data.data)
                 let assetInstanceUpdated = await this.processWithPlugin(e.data.data.type, 'prepareAssetAfterLoad', e.data.data)
+                //  console.log('updating asset', assetInstanceUpdated.id, gyre.asset.id)
                 gyre.assetManager.updateAsset(assetInstanceUpdated)
                 await this.processWithPlugin(e.data.data.type, 'assetUpdated', assetInstanceUpdated)
+                //   console.log('after updating asset gyre.asset.id', gyre.asset.id)
+
+                gyre.refresh()
             }
             // asset successfully opened
             if (e.data.payload === 'opened') {

@@ -81,6 +81,7 @@ class broadcast {
         gyre.icons = config.icons
         gyre.ComfyUI.workflowList = config.workflowList
         gyre.paletteValues = config.paletteValues
+        gyre.assetManager.updateAsset(gyre.asset) // otherwise two asset data structures around
         return true
     }
     async tabClosed() {

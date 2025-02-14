@@ -127,7 +127,6 @@ class indexInit {
         // @ts-ignore
         let res = await globalThis.broadcast.fetchConfig() // init gyre and everything else
         if (!res) return
-        console.log('initAsset, layers', globalThis.gyre.layers)
         let doc = window.document
         let pluginComponent = doc.createElement(globalThis.gyre.asset.type)
         pluginComponent.classList.add('darkColorScheme')

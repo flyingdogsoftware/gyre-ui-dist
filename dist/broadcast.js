@@ -151,10 +151,12 @@ class broadcast {
             if (e.data.docId !== this.docId) return
             if (e.data?.targetIds && !e.data?.targetIds?.includes(gyre.asset.id)) return // message only for a list (targetIds) of target tabs/assets
 
-            if (e.data.payload === 'updateRef') {
+            if (e.data.payload === 'updateRef' && e.data.assetId) {
+                if (!e.data?.data.ref) return
                 let asset = gyre.assetManager.getAssetById(e.data.assetId)
                 // update ref object
-                asset.ref = e.data.ref
+                asset.ref = e.data.data.ref
+                console.log('ref updated', asset.ref)
                 gyre.refresh()
                 return
             }

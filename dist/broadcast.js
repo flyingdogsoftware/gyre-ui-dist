@@ -79,6 +79,7 @@ class broadcast {
         gyre.assets = config.assets
         gyre.plugins = config.plugins
         gyre.icons = config.icons
+        gyre.ComfyUI.init(config?.paletteValues?.Config?.generalConfig?.url);
         gyre.ComfyUI.workflowList = config.workflowList
         gyre.paletteValues = config.paletteValues
         gyre.assetManager.updateAsset(gyre.asset) // otherwise two asset data structures around

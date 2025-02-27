@@ -41,6 +41,15 @@ class indexInit {
             //    contextMenu: [{ name: 'test', method: 'testMethod' }],
             openAsset: 'default',
         })
+        globalThis.gyre.registerPlugin('fds-waveform-editor', {
+            type: 'asset',
+            allowedTypes: ['audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/webm'],
+            hasClone: true,
+            createEmpty: true,
+            name: 'Audio',
+            //    contextMenu: [{ name: 'test', method: 'testMethod' }],
+            openAsset: 'default',
+        })
 
         globalThis.gyre.registerPlugin('fds-image-editor-selection', {
             type: 'tool',

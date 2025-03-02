@@ -47,6 +47,7 @@ class indexInit {
             hasClone: true,
             createEmpty: true,
             name: 'Audio',
+            ComfyUITags: ['AudioGenerate'],
             //    contextMenu: [{ name: 'test', method: 'testMethod' }],
             openAsset: 'default',
         })

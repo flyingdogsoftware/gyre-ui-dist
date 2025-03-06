@@ -31,6 +31,9 @@ Promise.all([
     loadScript(
         'https://flyingdogsoftware.github.io/gyre-ui-dist/dist/node_modules/%40fds-components/fds-ai-image-editor/dist/fds-ai-image-editor.js'
     ),
+    loadScript(
+        'https://flyingdogsoftware.github.io/gyre-ui-dist/dist/node_modules/%40fds-components/fds-image-editor-dialog/dist/fds-image-editor-dialog.js'
+    ),
     loadScript('https://flyingdogsoftware.github.io/gyre-ui-dist/dist/fds-image-editor-canvas.js'),
 ])
     .then(function () {

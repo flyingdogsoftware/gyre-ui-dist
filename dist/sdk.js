@@ -1,5 +1,13 @@
+let this_js_script = document.querySelector('script[src*=sdk]'); // or better regexp to get the file name..
+var excluded = this_js_script.getAttribute('data-exclude');
+
+
 function loadScript(url) {
     return new Promise(function (resolve, reject) {
+        if(excluded && url.includes(excluded)){
+            resolve(true);
+            return;
+        }
         var script = document.createElement('script')
         script.src = url
         script.onload = function () {

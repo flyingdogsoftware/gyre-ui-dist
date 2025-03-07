@@ -1,6 +1,6 @@
 {
     "name": "@fds-components/fds-image-editor-canvas",
-    "version": "1.2.52",
+    "version": "1.2.53",
     "scripts": {
         "build": "npm run build:prepare && rollup -c",
         "devdoc": "npm run build:prepare && export SKIP_HTTPSERVER=true && export MAKE_DOC=true && rollup -c -w",
@@ -51,7 +51,7 @@
         "@fds-components/fds-3d-scene": "^1.0.16",
         "@fds-components/fds-ai-image-editor": "^1.2.21",
         "@fds-components/fds-image-editor-button": "^1.0.53",
-        "@fds-components/fds-image-editor-dialog": "^1.0.62",
+        "@fds-components/fds-image-editor-dialog": "^1.0.63",
         "@fds-components/fds-image-editor-gradient": "^1.0.21",
         "@fds-components/fds-image-editor-menu": "^1.0.20",
         "@fds-components/fds-image-editor-paint-bucket": "^1.0.65",
